@@ -1,0 +1,109 @@
+  $id=$row=['transaction_id'];
+      $name = $row['client_name'];
+      $amount = $row['transaction_amount'];
+      $details= $row['transaction_details']; 
+       $status = $row['transaction_status'];
+
+
+
+
+       <?php
+
+if (isset($_GET['delete'])) 
+{
+      $AssestTag_No = $_GET['delete'];
+
+      $deletesql = "DELETE FROM assets WHERE AssestTag_No='{$AssestTag_No}';";
+      $query= mysqli_query($conn , $deletesql);
+
+}
+
+?>
+
+
+
+<?php
+
+function createcategory()
+{
+    global $conn;
+    
+if (isset($_POST['submit']))
+{
+    $id = $_POST['id'];
+   $title = $_POST['title'];
+  
+   if (  ($id == ""  || empty($id))   ||  ($title == ""  || empty($title)) )
+   {
+       echo "  Cannot Be Empty ";
+   }
+
+
+   else
+   {
+       $sql1 =" INSERT INTO category ( id , title) VALUES ( '$id' ,'$title');";
+
+       $result1 = mysqli_query($conn , $sql1);
+
+       if (!$result1)
+        {
+          die(' QUERY FAILED' .mysqli_error($conn));
+   }
+
+
+
+}
+}
+
+
+}
+
+
+function findall()
+{
+    global $conn;
+
+    $sql  = "SELECT * FROM category;";
+    $result = mysqli_query($conn , $sql);
+    
+    
+    while ($row=mysqli_fetch_assoc($result)) 
+    {
+        $id = $row['id'];
+        $title = $row['title'];
+         
+    echo "<tr>";
+    echo "<td>{$id} </td>";
+    echo "<td>{$title}</td>";
+    echo "<td><a class='btn btn-danger' href='categories.php?Delete={$id}'>Delete</a></td>";
+    echo "<td><a class='btn btn-warning' href='categories.php?Update={$id}'>Update</a></td>";
+    echo "</tr>";
+    
+    
+    }
+    
+
+}
+
+
+
+function deletedata()
+{
+    global $conn;
+    if (isset($_GET['Delete']))
+    {
+        $mainid = $_GET['Delete'];
+       $sqldelete = " DELETE FROM category  WHERE id = {$mainid};";
+       $deleteresult = mysqli_query($conn , $sqldelete);
+       
+     
+    
+    
+    }
+
+
+}
+
+
+?>
+
